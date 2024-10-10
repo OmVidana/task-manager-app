@@ -1,95 +1,160 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+import { useState } from 'react'
+import Task, { TaskElement } from '@components/task'
+import BottomNavbar from '@components/bottomNavbar'
+import styles from '@styles/page.module.scss'
+
+type TaskDictionary = {
+	[id: number]: TaskElement
+}
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+	const [pendingTasks, setPendingTasks] = useState<TaskDictionary>({})
+	const [completedTasks, setCompletedTasks] = useState<TaskDictionary>({})
+	const [deletedTasks, setDeletedTasks] = useState<TaskDictionary>({})
+	const [taskId, setTaskId] = useState(1)
+	const [currentView, setCurrentView] = useState('pending')
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+	const addTask = () => {
+		const id = taskId
+		const newTask: TaskElement = {
+			id: id,
+			title: 'Task name',
+			description: 'Write your task details here',
+			isCompleted: false,
+			isDeleted: false
+		}
+		setPendingTasks({ ...pendingTasks, [newTask.id]: newTask })
+		setTaskId(id + 1)
+	}
+
+	const updateTask = (id: number, title: string, description: string) => {
+		if (pendingTasks[id]) {
+			setPendingTasks({
+				...pendingTasks,
+				[id]: { ...pendingTasks[id], title, description }
+			})
+		} else if (completedTasks[id]) {
+			setCompletedTasks({
+				...completedTasks,
+				[id]: { ...completedTasks[id], title, description }
+			})
+		} else if (deletedTasks[id]) {
+			setDeletedTasks({
+				...deletedTasks,
+				[id]: { ...deletedTasks[id], title, description }
+			})
+		}
+	}
+
+	const toggleCompleteTask = (id: number) => {
+		if (pendingTasks[id] && !pendingTasks[id].isDeleted) {
+			const updatedTask = { ...pendingTasks[id], isCompleted: true }
+			const updatedPendingTasks = { ...pendingTasks }
+
+			delete updatedPendingTasks[id]
+			setPendingTasks(updatedPendingTasks)
+			setCompletedTasks({
+				...completedTasks,
+				[id]: updatedTask
+			})
+		} else if (completedTasks[id] && !completedTasks[id].isDeleted) {
+			const updatedTask = { ...completedTasks[id], isCompleted: false }
+			const updatedCompletedTasks = { ...completedTasks }
+
+			delete updatedCompletedTasks[id]
+			setCompletedTasks(updatedCompletedTasks)
+			setPendingTasks({
+				...pendingTasks,
+				[id]: updatedTask
+			})
+		}
+	}
+
+	const deleteTask = (id: number) => {
+		const taskToDelete = pendingTasks[id] || completedTasks[id]
+		if (taskToDelete) {
+			if (taskToDelete.isCompleted) {
+				const updatedCompletedTasks = { ...completedTasks }
+				delete updatedCompletedTasks[id]
+				setCompletedTasks(updatedCompletedTasks)
+			} else {
+				const updatedPendingTasks = { ...pendingTasks }
+				delete updatedPendingTasks[id]
+				setPendingTasks(updatedPendingTasks)
+			}
+
+			setDeletedTasks({
+				...deletedTasks,
+				[id]: { ...taskToDelete, isDeleted: true }
+			})
+		} else {
+			const updatedDeletedTasks = { ...deletedTasks }
+			delete updatedDeletedTasks[id]
+			setDeletedTasks(updatedDeletedTasks)
+		}
+	}
+
+	const restoreTask = (id: number) => {
+		const taskToRestore = deletedTasks[id]
+		if (taskToRestore) {
+			const updatedDeletedTasks = { ...deletedTasks }
+			delete updatedDeletedTasks[id]
+			setDeletedTasks(updatedDeletedTasks)
+			if (taskToRestore.isCompleted) {
+				setCompletedTasks({
+					...completedTasks,
+					[id]: { ...taskToRestore, isDeleted: false }
+				})
+				return
+			} else {
+				setPendingTasks({
+					...pendingTasks,
+					[id]: { ...taskToRestore, isDeleted: false }
+				})
+			}
+		}
+	}
+
+	const showHome = () => setCurrentView('pending')
+	const showCompleted = () => setCurrentView('completed')
+	const showDeleted = () => setCurrentView('deleted')
+
+	const displayTasks = () => {
+		switch (currentView) {
+			case 'completed':
+				return Object.values(completedTasks)
+			case 'deleted':
+				return Object.values(deletedTasks)
+			default:
+				return Object.values(pendingTasks)
+		}
+	}
+
+	return (
+		<div className={styles.homeRoot}>
+			<div className={styles.homeTitle}>
+				<h1>To do App</h1>
+			</div>
+			<div className={styles.homeContent}>
+				{currentView === 'pending' && <button onClick={addTask}>Add Task</button>}
+				<div>
+					{displayTasks().map((task) => (
+						<Task
+							key={task.id}
+							title={task.title}
+							description={task.description}
+							isCompleted={task.isCompleted}
+							isDeleted={task.isDeleted}
+							onUpdate={(title, description) => updateTask(task.id, title, description)}
+							onComplete={() => toggleCompleteTask(task.id)}
+							onDelete={() => deleteTask(task.id)}
+							onRestore={() => restoreTask(task.id)}
+						/>
+					))}
+				</div>
+			</div>
+			<BottomNavbar showHome={showHome} showCompleted={showCompleted} showDeleted={showDeleted} />
+		</div>
+	)
 }
