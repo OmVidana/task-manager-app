@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styles from '@styles/components/task.module.scss'
+import styles from './task.module.scss'
 
 type TaskProps = {
 	title: string

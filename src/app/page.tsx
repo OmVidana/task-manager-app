@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react'
-import Task, { TaskElement } from '@components/task'
-import BottomNavbar from '@components/bottomNavbar'
-import styles from '@styles/page.module.scss'
+import Task, { TaskElement } from '@/app/components/task/task'
+import BottomNavbar from '@/app/components/bottom-navbar/bottomNavbar'
+import styles from './page.module.scss'
 
 type TaskDictionary = {
 	[id: number]: TaskElement

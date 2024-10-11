@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styles from '@styles/components/bottomNavbar.module.scss'
+import styles from './bottomNavbar.module.scss'
 
 export default function BottomNavbar({
 	showHome,
