@@ -1,12 +1,18 @@
-import { useState } from 'react'
-import styles from './task.module.scss'
+import { useEffect, useState } from 'react'
+import './task.scss'
+import DatePicker from 'react-datepicker'
+import { format } from 'date-fns'
+import 'react-datepicker/dist/react-datepicker.css'
+import { Pencil, TrashSimple } from '@phosphor-icons/react'
 
 type TaskProps = {
 	title: string
 	description: string
 	isCompleted: boolean
 	isDeleted: boolean
-	onUpdate: (title: string, description: string) => void
+	priority: number
+	completionDate: Date
+	onUpdate: (title: string, description: string, priority: number, completionDate: Date) => void
 	onComplete: () => void
 	onDelete: () => void
 	onRestore: () => void
@@ -15,10 +21,29 @@ type TaskProps = {
 export default function Task(props: TaskProps) {
 	const [isEditing, setIsEditing] = useState(false)
 	const [taskTitle, setTaskTitle] = useState(props.title)
+	const [taskPriority, setTaskPriority] = useState(props.priority)
 	const [taskDescription, setTaskDescription] = useState(props.description)
+	const [taskCompletionDate, setTaskCompletionDate] = useState(props.completionDate)
+
+	useEffect(() => {
+		if (isEditing) {
+			setTaskTitle(props.title)
+			setTaskDescription(props.description)
+			setTaskPriority(props.priority)
+			setTaskCompletionDate(props.completionDate)
+		}
+	}, [isEditing, props])
 
 	const updateTask = () => {
-		props.onUpdate(taskTitle, taskDescription)
+		props.onUpdate(taskTitle, taskDescription, taskPriority, taskCompletionDate)
+		setIsEditing(false)
+	}
+
+	const restoreTask = () => {
+		setTaskTitle(props.title)
+		setTaskDescription(props.description)
+		setTaskPriority(props.priority)
+		setTaskCompletionDate(props.completionDate)
 		setIsEditing(false)
 	}
 
@@ -30,20 +55,48 @@ export default function Task(props: TaskProps) {
 		}
 	}
 
-	const taskClassNames = `${props.isDeleted ? styles.deleted : ''} ${props.isCompleted ? styles.completed : ''}`.trim()
+	const priority = ['Low', 'Medium', 'High', 'Critical']
+	// Si se requieren estilos de tearea al borrar y completar
+	const taskClassNames = `${props.isDeleted ? 'taskDeleted' : ''} ${props.isCompleted ? 'taskCompleted' : ''}`.trim()
 
 	return (
-		<div className={styles.task}>
-			{!props.isDeleted && <input type="checkbox" checked={props.isCompleted} onChange={props.onComplete} />}
+		<div className={`${taskClassNames}`}>
+			{!isEditing && (
+				<button onClick={() => setIsEditing(true)}>
+					<Pencil color="#ffffff" size={24} weight="bold" />
+				</button>
+			)}
+			<input type="checkbox" checked={props.isCompleted} onChange={props.onComplete} />
 			{isEditing ? (
 				<>
 					<input
 						type="text"
 						value={taskTitle}
-						placeholder="Task name"
+						placeholder="Title Here"
 						onChange={(e) => setTaskTitle(e.target.value)}
 						onKeyDown={handleKeyDown}
 					/>
+					<div>
+						<DatePicker
+							selected={taskCompletionDate}
+							onChange={(date) => setTaskCompletionDate(date!)}
+							showTimeSelect
+							timeFormat="HH:mm:ss"
+							timeIntervals={5}
+							timeCaption="time"
+							dateFormat="MMMM d, yyyy h:mm:ss aa"
+						/>
+					</div>
+					<div>
+						<label>Priority:</label>
+						<select value={taskPriority} onChange={(e) => setTaskPriority(Number(e.target.value))}>
+							{priority.map((label, index) => (
+								<option key={index} value={index}>
+									{label}
+								</option>
+							))}
+						</select>
+					</div>
 					<input
 						type="text"
 						value={taskDescription}
@@ -52,20 +105,27 @@ export default function Task(props: TaskProps) {
 						onKeyDown={handleKeyDown}
 					/>
 					<button onClick={updateTask}>Save</button>
+					<button onClick={restoreTask}>Cancel</button>
 				</>
 			) : (
 				<>
-					<h3 onClick={() => setIsEditing(true)}>{taskTitle}</h3>
-					<p onClick={() => setIsEditing(true)}>{taskDescription}</p>
+					<h3>{taskTitle}</h3>
+					<div>
+						<p>Due: {format(taskCompletionDate, 'MMMM d, yyyy h:mm:ss aa')}</p>
+						<p>Priority: {priority[taskPriority]}</p>
+					</div>
+					<p>{taskDescription}</p>
+					{props.isDeleted ? (
+						<>
+							<button onClick={props.onDelete}>Delete</button>
+							<button onClick={props.onRestore}>Restore</button>
+						</>
+					) : (
+						<button onClick={props.onDelete}>
+							<TrashSimple color="#ffffff" size={24} weight="bold" />
+						</button>
+					)}
 				</>
-			)}
-			{props.isDeleted ? (
-				<>
-					<input type="button" value={'Delete'} onClick={props.onDelete} />
-					<input type="button" value={'Restore'} onClick={props.onRestore} />
-				</>
-			) : (
-				<input type="button" value={'Delete'} onClick={props.onDelete} />
 			)}
 		</div>
 	)
@@ -77,4 +137,6 @@ export type TaskElement = {
 	description: string
 	isCompleted: boolean
 	isDeleted: boolean
+	priority: number
+	completionDate: Date
 }

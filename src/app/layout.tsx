@@ -14,8 +14,8 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-	title: 'Vidaña To Do',
-	description: 'To Do App in Class'
+	title: 'VC Task Manager',
+	description: 'Second Midterm Task Manager'
 }
 
 export default function RootLayout({

@@ -1,48 +1,70 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Task, { TaskElement } from '@/app/components/task/task'
 import BottomNavbar from '@/app/components/bottom-navbar/bottomNavbar'
-import styles from './page.module.scss'
+import './page.scss'
+import { Moon, Plus, Sun } from '@phosphor-icons/react'
+
+const SAVED_TASKS_KEY = 'saved-tasks'
+const SAVED_THEME_KEY = 'referred-theme'
 
 type TaskDictionary = {
 	[id: number]: TaskElement
 }
 
+type SortMethods = 'priority' | 'date' | 'name'
+type SortOrders = 0 | 1 // 0: Descending, 1: Ascending
+
 export default function Home() {
+	const [theme, setTheme] = useState<'light' | 'dark'>('light')
+	const [currentView, setCurrentView] = useState('pending')
 	const [pendingTasks, setPendingTasks] = useState<TaskDictionary>({})
 	const [completedTasks, setCompletedTasks] = useState<TaskDictionary>({})
 	const [deletedTasks, setDeletedTasks] = useState<TaskDictionary>({})
 	const [taskId, setTaskId] = useState(1)
-	const [currentView, setCurrentView] = useState('pending')
+	const [sortMethod, setSortMethod] = useState<SortMethods>('name')
+	const [sortOrder, setSortOrder] = useState<SortOrders>(0)
+
+	const toggleTheme = () => {
+		const newTheme = theme === 'light' ? 'dark' : 'light'
+		setTheme(newTheme)
+		localStorage.setItem(SAVED_THEME_KEY, newTheme)
+		document.documentElement.setAttribute('data-theme', newTheme)
+	}
 
 	const addTask = () => {
 		const id = taskId
+		const date = new Date()
+
 		const newTask: TaskElement = {
 			id: id,
-			title: 'Task name',
-			description: 'Write your task details here',
+			title: `Task #${id}`,
+			description: 'Escribe una descripción',
 			isCompleted: false,
-			isDeleted: false
+			isDeleted: false,
+			priority: 0,
+			completionDate: date
 		}
 		setPendingTasks({ ...pendingTasks, [newTask.id]: newTask })
+		console.log(pendingTasks)
 		setTaskId(id + 1)
 	}
 
-	const updateTask = (id: number, title: string, description: string) => {
+	const updateTask = (id: number, title: string, description: string, priority: number, completionDate: Date) => {
 		if (pendingTasks[id]) {
 			setPendingTasks({
 				...pendingTasks,
-				[id]: { ...pendingTasks[id], title, description }
+				[id]: { ...pendingTasks[id], title, description, priority, completionDate }
 			})
 		} else if (completedTasks[id]) {
 			setCompletedTasks({
 				...completedTasks,
-				[id]: { ...completedTasks[id], title, description }
+				[id]: { ...completedTasks[id], title, description, priority, completionDate }
 			})
 		} else if (deletedTasks[id]) {
 			setDeletedTasks({
 				...deletedTasks,
-				[id]: { ...deletedTasks[id], title, description }
+				[id]: { ...deletedTasks[id], title, description, priority, completionDate }
 			})
 		}
 	}
@@ -116,37 +138,111 @@ export default function Home() {
 		}
 	}
 
+	const sortTasks = (tasks: TaskElement[]) => {
+		return tasks.sort((a, b) => {
+			switch (sortMethod) {
+				case 'date':
+					return sortOrder === 1
+						? a.completionDate.getTime() - b.completionDate.getTime()
+						: b.completionDate.getTime() - a.completionDate.getTime()
+				case 'name':
+					return sortOrder === 1 ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
+				case 'priority':
+					return sortOrder === 1 ? a.priority - b.priority : b.priority - a.priority
+				default:
+					return sortOrder === 1 ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
+			}
+		})
+	}
+
 	const showHome = () => setCurrentView('pending')
 	const showCompleted = () => setCurrentView('completed')
 	const showDeleted = () => setCurrentView('deleted')
 
 	const displayTasks = () => {
+		let tasks: TaskElement[] = []
 		switch (currentView) {
 			case 'completed':
-				return Object.values(completedTasks)
+				tasks = Object.values(completedTasks)
+				break
 			case 'deleted':
-				return Object.values(deletedTasks)
+				tasks = Object.values(deletedTasks)
+				break
 			default:
-				return Object.values(pendingTasks)
+				tasks = Object.values(pendingTasks)
+				break
 		}
+		return sortTasks(tasks)
 	}
 
+	useEffect(() => {
+		let savedTheme = localStorage.getItem(SAVED_THEME_KEY)
+		const savedTasks = localStorage.getItem(SAVED_TASKS_KEY)
+
+		if (!savedTheme) {
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+			savedTheme = prefersDark ? 'dark' : 'light'
+		}
+
+		if (savedTasks) {
+			const { pending, completed, deleted, id } = JSON.parse(savedTasks)
+			setPendingTasks(pending || {})
+			setCompletedTasks(completed || {})
+			setDeletedTasks(deleted || {})
+			setTaskId(id || 1)
+		}
+
+		setTheme(savedTheme as 'light' | 'dark')
+		document.documentElement.setAttribute('data-theme', savedTheme)
+	}, [])
+
+	useEffect(() => {
+		const tasksToSave = {
+			pending: pendingTasks,
+			completed: completedTasks,
+			deleted: deletedTasks,
+			id: taskId
+		}
+		localStorage.setItem(SAVED_TASKS_KEY, JSON.stringify(tasksToSave))
+	}, [pendingTasks, completedTasks, deletedTasks, taskId])
+
 	return (
-		<div className={styles.homeRoot}>
-			<div className={styles.homeTitle}>
-				<h1>To do App</h1>
+		<div className="">
+			<div className="">
+				<button onClick={addTask} disabled={currentView !== 'pending'}>
+					<Plus color="#ffffff" size={48} weight="bold" />
+				</button>
+				<h1>Task Manager</h1>
+				<button onClick={toggleTheme}>
+					{theme === 'light' ? (
+						<Sun color="#ffffff" size={48} weight="bold" />
+					) : (
+						<Moon color="#ffffff" size={48} weight="bold" />
+					)}
+				</button>
 			</div>
-			<div className={styles.homeContent}>
-				{currentView === 'pending' && <button onClick={addTask}>Add Task</button>}
+			<div className="">
+				<div>
+					<label>Sort by: </label>
+					<select value={sortMethod} onChange={(e) => setSortMethod(e.target.value as SortMethods)}>
+						<option value="date">Completion Date</option>
+						<option value="name">Name</option>
+						<option value="priority">Priority</option>
+					</select>
+					<label>Order: </label>
+					<select value={sortOrder} onChange={(e) => setSortOrder(Number(e.target.value) as SortOrders)}>
+						<option value={0}>Descending</option>
+						<option value={1}>Ascending</option>
+					</select>
+				</div>
 				<div>
 					{displayTasks().map((task) => (
 						<Task
 							key={task.id}
-							title={task.title}
-							description={task.description}
-							isCompleted={task.isCompleted}
-							isDeleted={task.isDeleted}
-							onUpdate={(title, description) => updateTask(task.id, title, description)}
+							{...task}
+							onUpdate={(title, description, priority, completionDate) =>
+								updateTask(task.id, title, description, priority, completionDate)
+							}
 							onComplete={() => toggleCompleteTask(task.id)}
 							onDelete={() => deleteTask(task.id)}
 							onRestore={() => restoreTask(task.id)}

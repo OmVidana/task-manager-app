@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import styles from './bottomNavbar.module.scss'
+import './bottomBar.scss'
+import { CheckSquareOffset, ClipboardText, Trash } from '@phosphor-icons/react'
 
 export default function BottomNavbar({
 	showHome,
@@ -20,15 +21,18 @@ export default function BottomNavbar({
 	}
 
 	return (
-		<nav>
-			<button onClick={() => handleClick('pending', showHome)} disabled={activeView === 'pending'}>
+		<nav className="">
+			<button className="" onClick={() => handleClick('pending', showHome)} disabled={activeView === 'pending'}>
+				<ClipboardText color="#ffffff" size={48} weight="bold" />
 				Home
 			</button>
 			<button onClick={() => handleClick('completed', showCompleted)} disabled={activeView === 'completed'}>
+				<CheckSquareOffset color="#ffffff" size={48} weight="bold" />
 				Completed
 			</button>
 			<button onClick={() => handleClick('deleted', showDeleted)} disabled={activeView === 'deleted'}>
-				Trashbin
+				<Trash color="#ffffff" size={48} weight="bold" />
+				Deleted
 			</button>
 		</nav>
 	)
