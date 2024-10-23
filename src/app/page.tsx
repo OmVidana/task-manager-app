@@ -1,23 +1,58 @@
 'use client'
+//WIP Missing Key controls
 import { useEffect, useState } from 'react'
 import Task, { TaskElement } from '@/app/components/task/task'
-import BottomNavbar from '@/app/components/bottom-navbar/bottomNavbar'
+import BottomNavbar, { View } from '@/app/components/bottom-navbar/bottomNavbar'
 import './page.scss'
 import { Moon, Plus, Sun } from '@phosphor-icons/react'
 
-const SAVED_TASKS_KEY = 'saved-tasks'
+// Local Storage Keys
+const NEXT_TASK_KEY = 'next-tasks'
+const PENDING_TASKS_KEY = 'pending-tasks'
+const COMPLETED_TASKS_KEY = 'completed-tasks'
+const DELETED_TASKS_KEY = 'deleted-tasks'
 const SAVED_THEME_KEY = 'referred-theme'
 
+/** Dictionary to store tasks using their IDs as keys.*/
 type TaskDictionary = {
 	[id: number]: TaskElement
 }
 
-type SortMethods = 'priority' | 'date' | 'name'
-type SortOrders = 0 | 1 // 0: Descending, 1: Ascending
+/**
+ * Parses raw tasks from localStorage and converts them into a TaskDictionary.
+ * @param {string | null} rawTasks - The raw stringified tasks from localStorage.
+ * @returns {TaskDictionary} - A parsed task dictionary.
+ */
 
+function parseTasks(rawTasks: string | null): TaskDictionary {
+	if (!rawTasks) return {}
+	const parsed: TaskDictionary = JSON.parse(rawTasks)
+
+	for (const key in parsed) {
+		parsed[key].completionDate = new Date(parsed[key].completionDate)
+	}
+	return parsed
+}
+/** Theme options for the application.*/
+type Theme = 'light' | 'dark'
+/** Sorting methods for tasks.*/
+type SortMethods = 'priority' | 'date' | 'name'
+/**
+ * Sorting orders for tasks.
+ * 0 - Descending. 1 - Ascending.
+ */
+type SortOrders = 0 | 1
+
+/**
+ * Home Component - Home page of the application.
+ * Handles theme switching, task manipulation and storage.
+ *
+ * @component
+ * @returns {JSX.Element} - The rendered Home component.
+ */
 export default function Home() {
-	const [theme, setTheme] = useState<'light' | 'dark'>('light')
-	const [currentView, setCurrentView] = useState('pending')
+	const [theme, setTheme] = useState<Theme>('light')
+	const [currentView, setCurrentView] = useState<View>('pending')
 	const [pendingTasks, setPendingTasks] = useState<TaskDictionary>({})
 	const [completedTasks, setCompletedTasks] = useState<TaskDictionary>({})
 	const [deletedTasks, setDeletedTasks] = useState<TaskDictionary>({})
@@ -25,119 +60,235 @@ export default function Home() {
 	const [sortMethod, setSortMethod] = useState<SortMethods>('name')
 	const [sortOrder, setSortOrder] = useState<SortOrders>(0)
 
-	const toggleTheme = () => {
-		const newTheme = theme === 'light' ? 'dark' : 'light'
-		setTheme(newTheme)
-		localStorage.setItem(SAVED_THEME_KEY, newTheme)
-		document.documentElement.setAttribute('data-theme', newTheme)
+	/**
+	 * Handles keyboard events to perform general actions.
+	 *
+	 * @param {React.KeyboardEvent} event - The keyboard event object.
+	 *
+	 * Key mappings:
+	 * - 'KeyT': Adds a new task if the current view is 'pending'.
+	 * - 'KeyS': Toggles the theme between light and dark.
+	 * - 'Digit1': Sets the current view to 'pending'.
+	 * - 'Digit2': Sets the current view to 'completed'.
+	 * - 'Digit3': Sets the current view to 'deleted'.
+	 */
+	const handleKey = (event: React.KeyboardEvent) => {
+		switch (event.code) {
+			case 'KeyT':
+				if (currentView === 'pending') addTask()
+				break
+			case 'KeyS':
+				toggleTheme()
+				break
+			case 'Digit1':
+				setCurrentView('pending')
+				break
+			case 'Digit2':
+				setCurrentView('completed')
+				break
+			case 'Digit3':
+				setCurrentView('deleted')
+				break
+		}
 	}
 
+	/**
+	 * Toggles the current theme between light and dark.
+	 */
+	const toggleTheme = () => {
+		const newTheme = theme === 'light' ? 'dark' : 'light'
+		localStorage.setItem(SAVED_THEME_KEY, newTheme)
+		setTheme(newTheme)
+	}
+
+	/**
+	 * Adds a new task to the pending tasks.
+	 */
 	const addTask = () => {
-		const id = taskId
 		const date = new Date()
 
 		const newTask: TaskElement = {
-			id: id,
-			title: `Task #${id}`,
+			id: taskId,
+			title: `Task #${taskId}`,
 			description: 'Escribe una descripción',
 			isCompleted: false,
 			isDeleted: false,
 			priority: 0,
 			completionDate: date
 		}
-		setPendingTasks({ ...pendingTasks, [newTask.id]: newTask })
-		console.log(pendingTasks)
-		setTaskId(id + 1)
+		setPendingTasks((prevPendingTasks) => {
+			const updatedPendingTasks = { ...prevPendingTasks, [newTask.id]: newTask }
+			localStorage.setItem(PENDING_TASKS_KEY, JSON.stringify(updatedPendingTasks))
+			return updatedPendingTasks
+		})
+		setTaskId((prevTaskId) => {
+			const newTaskId = prevTaskId + 1
+			localStorage.setItem(NEXT_TASK_KEY, newTaskId.toString())
+			return newTaskId
+		})
 	}
 
+	/**
+	 * Updates a task with the provided values.
+	 *
+	 * @param {number} id - The ID of the task to update.
+	 * @param {string} title - The new title of the task.
+	 * @param {string} description - The new description of the task.
+	 * @param {number} priority - The new priority of the task.
+	 * @param {Date} completionDate - The new completion date of the task.
+	 */
 	const updateTask = (id: number, title: string, description: string, priority: number, completionDate: Date) => {
 		if (pendingTasks[id]) {
-			setPendingTasks({
-				...pendingTasks,
-				[id]: { ...pendingTasks[id], title, description, priority, completionDate }
+			setPendingTasks((prevPendingTasks) => {
+				const updatedPendingTasks = {
+					...prevPendingTasks,
+					[id]: { ...pendingTasks[id], title, description, priority, completionDate }
+				}
+				localStorage.setItem(PENDING_TASKS_KEY, JSON.stringify(updatedPendingTasks))
+				return updatedPendingTasks
 			})
 		} else if (completedTasks[id]) {
-			setCompletedTasks({
-				...completedTasks,
-				[id]: { ...completedTasks[id], title, description, priority, completionDate }
+			setCompletedTasks((prevCompletedTasks) => {
+				const updatedCompletedTasks = {
+					...prevCompletedTasks,
+					[id]: { ...completedTasks[id], title, description, priority, completionDate }
+				}
+				localStorage.setItem(COMPLETED_TASKS_KEY, JSON.stringify(updatedCompletedTasks))
+				return updatedCompletedTasks
 			})
 		} else if (deletedTasks[id]) {
-			setDeletedTasks({
-				...deletedTasks,
-				[id]: { ...deletedTasks[id], title, description, priority, completionDate }
+			setDeletedTasks((prevDeletedTasks) => {
+				const updatedDeletedTasks = {
+					...prevDeletedTasks,
+					[id]: { ...deletedTasks[id], title, description, priority, completionDate }
+				}
+				localStorage.setItem(DELETED_TASKS_KEY, JSON.stringify(deletedTasks))
+				return updatedDeletedTasks
 			})
 		}
 	}
-
+	/**
+	 * Toggles the completion status of a task.
+	 * If the task is pending, it will be marked as completed.
+	 * If the task is completed, it will be marked as pending.
+	 *
+	 * @param {number} id - The ID of the task to toggle.
+	 */
 	const toggleCompleteTask = (id: number) => {
 		if (pendingTasks[id] && !pendingTasks[id].isDeleted) {
 			const updatedTask = { ...pendingTasks[id], isCompleted: true }
-			const updatedPendingTasks = { ...pendingTasks }
 
-			delete updatedPendingTasks[id]
-			setPendingTasks(updatedPendingTasks)
-			setCompletedTasks({
-				...completedTasks,
-				[id]: updatedTask
+			setPendingTasks((prev) => {
+				const updatedPending = { ...prev }
+				delete updatedPending[id]
+				localStorage.setItem(PENDING_TASKS_KEY, JSON.stringify(updatedPending))
+				return updatedPending
+			})
+
+			setCompletedTasks((prev) => {
+				const updatedCompleted = { ...prev, [id]: updatedTask }
+				localStorage.setItem(COMPLETED_TASKS_KEY, JSON.stringify(updatedCompleted))
+				return updatedCompleted
 			})
 		} else if (completedTasks[id] && !completedTasks[id].isDeleted) {
 			const updatedTask = { ...completedTasks[id], isCompleted: false }
-			const updatedCompletedTasks = { ...completedTasks }
 
-			delete updatedCompletedTasks[id]
-			setCompletedTasks(updatedCompletedTasks)
-			setPendingTasks({
-				...pendingTasks,
-				[id]: updatedTask
+			setCompletedTasks((prev) => {
+				const updatedCompleted = { ...prev }
+				delete updatedCompleted[id]
+				localStorage.setItem(COMPLETED_TASKS_KEY, JSON.stringify(updatedCompleted))
+				return updatedCompleted
+			})
+
+			setPendingTasks((prev) => {
+				const updatedPending = { ...prev, [id]: updatedTask }
+				localStorage.setItem(PENDING_TASKS_KEY, JSON.stringify(updatedPending))
+				return updatedPending
 			})
 		}
 	}
 
+	/**
+	 * Deletes a task from the pending or completed tasks.
+	 * If the task is pending, it will be moved to the deleted tasks.
+	 * If the task is completed, it will be removed from the completed tasks.
+	 * If the task is already deleted, it will be removed from the deleted tasks.
+	 *
+	 * @param {number} id - The ID of the task to delete.
+	 */
 	const deleteTask = (id: number) => {
 		const taskToDelete = pendingTasks[id] || completedTasks[id]
 		if (taskToDelete) {
 			if (taskToDelete.isCompleted) {
-				const updatedCompletedTasks = { ...completedTasks }
-				delete updatedCompletedTasks[id]
-				setCompletedTasks(updatedCompletedTasks)
+				setCompletedTasks((prev) => {
+					const updatedCompleted = { ...prev }
+					delete updatedCompleted[id]
+					localStorage.setItem(COMPLETED_TASKS_KEY, JSON.stringify(updatedCompleted))
+					return updatedCompleted
+				})
 			} else {
-				const updatedPendingTasks = { ...pendingTasks }
-				delete updatedPendingTasks[id]
-				setPendingTasks(updatedPendingTasks)
+				setPendingTasks((prev) => {
+					const updatedPending = { ...prev }
+					delete updatedPending[id]
+					localStorage.setItem(PENDING_TASKS_KEY, JSON.stringify(updatedPending))
+					return updatedPending
+				})
 			}
 
-			setDeletedTasks({
-				...deletedTasks,
-				[id]: { ...taskToDelete, isDeleted: true }
+			setDeletedTasks((prev) => {
+				const updatedDeleted = { ...prev, [id]: { ...taskToDelete, isDeleted: true } }
+				localStorage.setItem(DELETED_TASKS_KEY, JSON.stringify(updatedDeleted))
+				return updatedDeleted
 			})
 		} else {
-			const updatedDeletedTasks = { ...deletedTasks }
-			delete updatedDeletedTasks[id]
-			setDeletedTasks(updatedDeletedTasks)
+			setDeletedTasks((prev) => {
+				const updatedDeleted = { ...prev }
+				delete updatedDeleted[id]
+				localStorage.setItem(DELETED_TASKS_KEY, JSON.stringify(updatedDeleted))
+				return updatedDeleted
+			})
 		}
 	}
 
+	/**
+	 * Restores a task from the deleted tasks.
+	 * If the task was completed, it will be moved to the completed tasks.
+	 * If the task was pending, it will be moved to the pending tasks.
+	 *
+	 * @param {number} id - The ID of the task to restore.
+	 */
 	const restoreTask = (id: number) => {
 		const taskToRestore = deletedTasks[id]
 		if (taskToRestore) {
-			const updatedDeletedTasks = { ...deletedTasks }
-			delete updatedDeletedTasks[id]
-			setDeletedTasks(updatedDeletedTasks)
+			setDeletedTasks((prev) => {
+				const updatedDeleted = { ...prev }
+				delete updatedDeleted[id]
+				localStorage.setItem(DELETED_TASKS_KEY, JSON.stringify(updatedDeleted))
+				return updatedDeleted
+			})
+
 			if (taskToRestore.isCompleted) {
-				setCompletedTasks({
-					...completedTasks,
-					[id]: { ...taskToRestore, isDeleted: false }
+				setCompletedTasks((prev) => {
+					const updatedCompleted = { ...prev, [id]: { ...taskToRestore, isDeleted: false } }
+					localStorage.setItem(COMPLETED_TASKS_KEY, JSON.stringify(updatedCompleted))
+					return updatedCompleted
 				})
-				return
 			} else {
-				setPendingTasks({
-					...pendingTasks,
-					[id]: { ...taskToRestore, isDeleted: false }
+				setPendingTasks((prev) => {
+					const updatedPending = { ...prev, [id]: { ...taskToRestore, isDeleted: false } }
+					localStorage.setItem(PENDING_TASKS_KEY, JSON.stringify(updatedPending))
+					return updatedPending
 				})
 			}
 		}
 	}
 
+	/**
+	 * Sorts tasks based on the current sort method and order.
+	 *
+	 * @param {TaskElement[]}
+	 * @returns {TaskElement[]} - The sorted tasks.
+	 */
 	const sortTasks = (tasks: TaskElement[]) => {
 		return tasks.sort((a, b) => {
 			switch (sortMethod) {
@@ -155,10 +306,16 @@ export default function Home() {
 		})
 	}
 
+	// Changes the current view to the pending, completed or deleted tasks.
 	const showHome = () => setCurrentView('pending')
 	const showCompleted = () => setCurrentView('completed')
 	const showDeleted = () => setCurrentView('deleted')
 
+	/**
+	 * Displays the tasks based on the current view.
+	 *
+	 * @returns {TaskElement[]}
+	 */
 	const displayTasks = () => {
 		let tasks: TaskElement[] = []
 		switch (currentView) {
@@ -175,59 +332,68 @@ export default function Home() {
 		return sortTasks(tasks)
 	}
 
+	// Load theme and tasks from local storage on first render.
 	useEffect(() => {
-		let savedTheme = localStorage.getItem(SAVED_THEME_KEY)
-		const savedTasks = localStorage.getItem(SAVED_TASKS_KEY)
-
-		if (!savedTheme) {
+		const savedTheme = localStorage.getItem(SAVED_THEME_KEY)
+		if (savedTheme) {
+			setTheme(savedTheme as Theme)
+			document.documentElement.setAttribute('data-theme', savedTheme)
+		} else {
 			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-			savedTheme = prefersDark ? 'dark' : 'light'
+			const systemTheme = prefersDark ? 'dark' : 'light'
+			localStorage.setItem(SAVED_THEME_KEY, systemTheme)
+			setTheme(systemTheme)
+			document.documentElement.setAttribute('data-theme', systemTheme)
 		}
 
-		if (savedTasks) {
-			const { pending, completed, deleted, id } = JSON.parse(savedTasks)
-			setPendingTasks(pending || {})
-			setCompletedTasks(completed || {})
-			setDeletedTasks(deleted || {})
-			setTaskId(id || 1)
-		}
+		const savedPendingTasks = parseTasks(localStorage.getItem(PENDING_TASKS_KEY))
+		const savedCompletedTasks = parseTasks(localStorage.getItem(COMPLETED_TASKS_KEY))
+		const savedDeletedTasks = parseTasks(localStorage.getItem(DELETED_TASKS_KEY))
+		const savedTaskId = parseInt(localStorage.getItem(NEXT_TASK_KEY)!, 10) || 1
 
-		setTheme(savedTheme as 'light' | 'dark')
-		document.documentElement.setAttribute('data-theme', savedTheme)
+		setPendingTasks(savedPendingTasks)
+		setCompletedTasks(savedCompletedTasks)
+		setDeletedTasks(savedDeletedTasks)
+		setTaskId(savedTaskId)
 	}, [])
 
+	// Update the theme on change.
 	useEffect(() => {
-		const tasksToSave = {
-			pending: pendingTasks,
-			completed: completedTasks,
-			deleted: deletedTasks,
-			id: taskId
-		}
-		localStorage.setItem(SAVED_TASKS_KEY, JSON.stringify(tasksToSave))
-	}, [pendingTasks, completedTasks, deletedTasks, taskId])
+		document.documentElement.setAttribute('data-theme', theme)
+	}, [theme])
 
 	return (
-		<div className="page">
+		<div className="page" tabIndex={0} autoFocus onKeyDown={handleKey}>
 			<div className="Puzzle-root ">
-				<button className='addTask' onClick={addTask} disabled={currentView !== 'pending'} style={{
-					border: '2px solid #ffffff',
-					borderRadius: '8px',
-					padding: '10px',
-					backgroundColor: 'transparent',
-					transition: 'transform 0.2s ease-in-out',
-				}} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-					onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+				<button
+					className="addTask"
+					onClick={addTask}
+					disabled={currentView !== 'pending'}
+					style={{
+						border: '2px solid #ffffff',
+						borderRadius: '8px',
+						padding: '10px',
+						backgroundColor: 'transparent',
+						transition: 'transform 0.2s ease-in-out'
+					}}
+					onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+					onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+				>
 					<Plus color="#ffffff" size={28} weight="bold" />
 				</button>
 				<h1>Task Manager</h1>
-				<button onClick={toggleTheme} style={{
-					border: '2px solid #ffffff',
-					borderRadius: '8px',
-					padding: '10px',
-					backgroundColor: 'transparent',
-					transition: 'transform 0.2s ease-in-out',
-				}} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-					onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+				<button
+					onClick={toggleTheme}
+					style={{
+						border: '2px solid #ffffff',
+						borderRadius: '8px',
+						padding: '10px',
+						backgroundColor: 'transparent',
+						transition: 'transform 0.2s ease-in-out'
+					}}
+					onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+					onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+				>
 					{theme === 'light' ? (
 						<Sun color="#ffffff" size={28} weight="bold" />
 					) : (
@@ -251,9 +417,10 @@ export default function Home() {
 					</select>
 				</div>
 				<div className="task-list">
-					{displayTasks().map((task) => (
+					{displayTasks().map((task, index) => (
 						<Task
 							key={task.id}
+							tabIndex={index + 1}
 							{...task}
 							onUpdate={(title, description, priority, completionDate) =>
 								updateTask(task.id, title, description, priority, completionDate)

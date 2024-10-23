@@ -13,7 +13,6 @@
 	align-items: center; // Alinea verticalmente los elementos al centro
 	gap: 10px;
 	justify-content: space-between;
-
 }
 
 .edit-button {
@@ -66,9 +65,8 @@
 		}
 	}
 
-
 	&::before {
-		content: "";
+		content: '';
 		display: block;
 		width: 10px; // Tamaño del check
 		height: 10px;
