@@ -80,3 +80,36 @@
 		background-color: var(--piece-bg-color); // Check blanco al marcar
 	}
 }
+
+.center-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%; // Asegura que ocupe todo el ancho
+}
+
+.edit-button2 {
+	background-color: var(--piece-bg-color); // Fondo negro
+	border: 1px solid var(--foreground); // Borde blanco de 2px
+	border-radius: 5px; // Bordes redondeados (opcional)
+	padding: 8px; // Espaciado interno para agrandar el botón
+	cursor: pointer; // Cambia el cursor al pasar sobre el botón
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+
+	svg {
+		color: var(--foreground); // Color blanco del ícono
+		width: 1.5em; // Tamaño del ícono responsivo
+		height: 1.5em; // Altura del ícono igual al ancho para mantener proporción
+	}
+
+	&:hover {
+		background-color: #b1a9a9; // Fondo más claro al pasar el mouse
+
+		svg {
+			color: #3f3f3f; // Cambia el color del ícono al pasar el mouse
+		}
+	}
+}

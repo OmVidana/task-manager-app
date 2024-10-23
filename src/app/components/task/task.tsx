@@ -123,9 +123,11 @@ export default function Task(props: TaskProps) {
 							<button onClick={props.onRestore}>Restore</button>
 						</>
 					) : (
-						<button className='edit-button' onClick={props.onDelete}>
-							<TrashSimple color="#ffffff" size={24} weight="bold" />
-						</button>
+						<div className='center-button'>
+							<button className='edit-button2' onClick={props.onDelete}>
+								<TrashSimple color="#ffffff" size={24} weight="bold" />
+							</button>
+						</div>
 					)}
 				</>
 			)}
