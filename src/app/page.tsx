@@ -207,22 +207,39 @@ export default function Home() {
 	}, [pendingTasks, completedTasks, deletedTasks, taskId])
 
 	return (
-		<div className="">
-			<div className="">
-				<button onClick={addTask} disabled={currentView !== 'pending'}>
-					<Plus color="#ffffff" size={48} weight="bold" />
+		<div className="page">
+			<div className="Puzzle-root ">
+				<button className='addTask' onClick={addTask} disabled={currentView !== 'pending'} style={{
+					border: '2px solid #ffffff',
+					borderRadius: '8px',
+					padding: '10px',
+					backgroundColor: 'transparent',
+					cursor: currentView === 'pending' ? 'pointer' : 'not-allowed',
+					transition: 'transform 0.2s ease-in-out',
+				}} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+					onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+					<Plus color="#ffffff" size={28} weight="bold" />
 				</button>
 				<h1>Task Manager</h1>
-				<button onClick={toggleTheme}>
+				<button onClick={toggleTheme} style={{
+					border: '2px solid #ffffff',
+					borderRadius: '8px',
+					padding: '10px',
+					backgroundColor: 'transparent',
+					cursor: currentView === 'pending' ? 'pointer' : 'not-allowed',
+					transition: 'transform 0.2s ease-in-out',
+				}} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+					onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
 					{theme === 'light' ? (
-						<Sun color="#ffffff" size={48} weight="bold" />
+						<Sun color="#ffffff" size={28} weight="bold" />
 					) : (
-						<Moon color="#ffffff" size={48} weight="bold" />
+						<Moon color="#ffffff" size={28} weight="bold" />
 					)}
 				</button>
 			</div>
-			<div className="">
-				<div>
+			<br />
+			<div className="task-container">
+				<div className="task-controls">
 					<label>Sort by: </label>
 					<select value={sortMethod} onChange={(e) => setSortMethod(e.target.value as SortMethods)}>
 						<option value="date">Completion Date</option>
@@ -235,7 +252,7 @@ export default function Home() {
 						<option value={1}>Ascending</option>
 					</select>
 				</div>
-				<div>
+				<div className="task-list">
 					{displayTasks().map((task) => (
 						<Task
 							key={task.id}
@@ -250,6 +267,7 @@ export default function Home() {
 					))}
 				</div>
 			</div>
+			<br />
 			<BottomNavbar showHome={showHome} showCompleted={showCompleted} showDeleted={showDeleted} />
 		</div>
 	)

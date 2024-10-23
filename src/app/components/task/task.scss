@@ -1,3 +1,82 @@
 .task {
-	background-color: var(--bg-secondary);
+	border-bottom: 1px solid var(--foreground); // Color y grosor de la línea entre tareas
+	padding-bottom: 10px; // Espacio entre la línea y el contenido
+	margin-bottom: 10px; // Espacio entre cada tarea
+
+	&:last-child {
+		border-bottom: none; // Evitar la línea debajo de la última tarea
+	}
+}
+
+.task2 {
+	display: flex;
+	align-items: center; // Alinea verticalmente los elementos al centro
+	gap: 10px;
+	justify-content: space-between;
+
+}
+
+.edit-button {
+	background-color: var(--piece-bg-color); // Fondo negro
+	border: 1px solid var(--foreground); // Borde blanco de 2px
+	border-radius: 5px; // Bordes redondeados (opcional)
+	padding: 8px; // Espaciado interno para agrandar el botón
+	cursor: pointer; // Cambia el cursor al pasar sobre el botón
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	svg {
+		color: var(--foreground); // Color blanco del ícono
+		width: 1.5em; // Tamaño del ícono responsivo
+		height: 1.5em; // Altura del ícono igual al ancho para mantener proporción
+	}
+
+	&:hover {
+		background-color: #b1a9a9; // Fondo más claro al pasar el mouse
+
+		svg {
+			color: #3f3f3f; // Cambia el color del ícono al pasar el mouse
+		}
+	}
+}
+
+.custom-checkbox {
+	width: 38px; // Tamaño igual al icono del Pencil
+	height: 38px; // Tamaño igual al icono del Pencil
+	background-color: var(--piece-bg-color); // Mismo fondo que el botón
+	border: 1px solid var(--foreground); // Borde blanco igual al del botón
+	border-radius: 5px; // Bordes redondeados como en el botón
+	cursor: pointer;
+	appearance: none; // Ocultar el estilo nativo del checkbox
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	&:checked {
+		background-color: var(--foreground); // Fondo blanco cuando está marcado
+	}
+
+	&:hover {
+		background-color: #b1a9a9; // Fondo más claro al pasar el mouse
+
+		svg {
+			color: #3f3f3f; // Cambia el color del ícono al pasar el mouse
+		}
+	}
+
+
+	&::before {
+		content: "";
+		display: block;
+		width: 10px; // Tamaño del check
+		height: 10px;
+		background-color: var(--foreground); // Color del "check" interno
+		clip-path: polygon(14% 44%, 0% 65%, 50% 100%, 100% 14%, 80% 0%, 43% 62%); // Forma de check
+	}
+
+	&:checked::before {
+		background-color: var(--piece-bg-color); // Check blanco al marcar
+	}
 }

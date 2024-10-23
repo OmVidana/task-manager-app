@@ -1,7 +1,31 @@
-.navbar {
+.bottomNavBar {
+	position: fixed;
+	bottom: 0;
+	width: 100dvw;
 	display: flex;
+	align-items: center; // Centra los elementos verticalmente
+	justify-content: space-between; // Distribuye los elementos a ambos lados
+	gap: 10px; // Espacio entre los elementos
+	padding: 10px 20px;
+	background-color: var(--piece-bg-color); // Fondo negro (o el color definido en tu tema)
+	color: var(--piece-color); // Color blanco (o el color definido en tu tema)
+	border-top: 1px solid var(--foreground); // Línea superior para separarlo visualmente
+	box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); // Sombra para darle un efecto flotante
+}
+
+.bottomNavBar button {
+	background-color: transparent;
+	margin-right: 40px;
+	border: none;
+	cursor: pointer;
+	padding: 8px; // Ajusta el tamaño del botón para que sea consistente
+	display: inline-flex;
 	align-items: center;
-	justify-content: space-around;
-	width: 100%;
-	height: 10%;
+	justify-content: center;
+
+	svg {
+		color: var(--piece-color); // Color del icono en la barra de navegación
+		width: 1.5em;
+		height: 1.5em;
+	}
 }

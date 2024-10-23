@@ -60,13 +60,16 @@ export default function Task(props: TaskProps) {
 	const taskClassNames = `${props.isDeleted ? 'taskDeleted' : ''} ${props.isCompleted ? 'taskCompleted' : ''}`.trim()
 
 	return (
-		<div className={`${taskClassNames}`}>
-			{!isEditing && (
-				<button onClick={() => setIsEditing(true)}>
-					<Pencil color="#ffffff" size={24} weight="bold" />
-				</button>
-			)}
-			<input type="checkbox" checked={props.isCompleted} onChange={props.onComplete} />
+		<div className='task'>
+			<div className='task2'>
+				{!isEditing && (
+					<button className='edit-button' onClick={() => setIsEditing(true)}>
+						<Pencil size={18} weight="bold" />
+					</button>
+				)}
+				<h3>{taskTitle}</h3>
+				<input type="checkbox" className='custom-checkbox' checked={props.isCompleted} onChange={props.onComplete} />
+			</div>
 			{isEditing ? (
 				<>
 					<input
@@ -109,7 +112,6 @@ export default function Task(props: TaskProps) {
 				</>
 			) : (
 				<>
-					<h3>{taskTitle}</h3>
 					<div>
 						<p>Due: {format(taskCompletionDate, 'MMMM d, yyyy h:mm:ss aa')}</p>
 						<p>Priority: {priority[taskPriority]}</p>
@@ -121,7 +123,7 @@ export default function Task(props: TaskProps) {
 							<button onClick={props.onRestore}>Restore</button>
 						</>
 					) : (
-						<button onClick={props.onDelete}>
+						<button className='edit-button' onClick={props.onDelete}>
 							<TrashSimple color="#ffffff" size={24} weight="bold" />
 						</button>
 					)}

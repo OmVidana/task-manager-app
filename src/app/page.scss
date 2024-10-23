@@ -1,15 +1,125 @@
-.homeRoot {
+.page {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
+	width: 100dvw;
 	height: 100dvh;
+	background-color: var(--background);
+}
 
-	.homeTitle {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-		height: 10%;
+
+.Puzzle-root {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	border-bottom: 2px solid var(--foreground); // Línea superior para separarlo visualmente
+	background-color: var(--piece-bg-color); // Define este color en tu tema claro y oscuro
+	color: var(--piece-color); // Define este color en tu tema claro y oscuro
+}
+
+.Puzzle-root h1 {
+	flex: 1;
+	text-align: center;
+	font-size: 24px;
+	margin: 0;
+}
+
+.Puzzle-root button {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.Puzzle-root button:disabled {
+	cursor: not-allowed;
+}
+
+.task-container {
+	color: var(--foreground);
+	max-width: 100dvw;
+	margin: 0 auto;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	background-color: var(--piece-bg-color);
+	/* Color de fondo del contenedor */
+	border: 2px solid var(--piece-color);
+	/* Borde alrededor del contenedor */
+	border-radius: 10px;
+	/* Bordes redondeados */
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	/* Sombras para darle profundidad */
+
+	// Responsivo para pantallas más pequeñas
+	@media (max-width: 768px) {
+		max-width: 90%;
+		/* Se ajusta a un 90% del ancho de la pantalla */
+		padding: 15px;
+	}
+
+	@media (max-width: 480px) {
+		max-width: 95%;
+		/* Más responsivo para pantallas muy pequeñas */
+		padding: 10px;
+	}
+}
+
+.task-controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+
+	label {
+		font-weight: bold;
+	}
+
+	select {
+		padding: 5px;
+		border: 1px solid var(--piece-color);
+		border-radius: 4px;
+		background-color: var(--piece-color);
+	}
+}
+
+.task-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+
+	// Establece una altura máxima y permite scroll
+	max-height: 400px;
+	overflow-y: auto;
+
+	background-color: var(--background);
+	/* Fondo blanco para las tareas */
+	border: 1px solid var(--piece-color);
+	/* Borde alrededor de las tareas */
+	padding: 15px;
+	/* Espaciado interno */
+	border-radius: 8px;
+	/* Bordes redondeados */
+
+	// Estiliza el scroll
+	scrollbar-width: thin;
+	/* Para Firefox */
+	scrollbar-color: #888 var(--piece-color);
+
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: var(--piece-color);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: #888;
+		border-radius: 10px;
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: #555;
 	}
 }

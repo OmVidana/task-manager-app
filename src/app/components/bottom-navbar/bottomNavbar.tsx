@@ -21,19 +21,58 @@ export default function BottomNavbar({
 	}
 
 	return (
-		<nav className="">
-			<button className="" onClick={() => handleClick('pending', showHome)} disabled={activeView === 'pending'}>
+		<nav className="bottomNavBar">
+			<button
+				className="icon-button"
+				onClick={() => handleClick('pending', showHome)}
+				disabled={activeView === 'pending'}
+				style={{
+					border: '2px solid #ffffff',
+					borderRadius: '8px',
+					padding: '10px',
+					backgroundColor: 'transparent',
+					transition: 'transform 0.2s ease-in-out',
+				}}
+				onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+				onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+			>
 				<ClipboardText color="#ffffff" size={48} weight="bold" />
-				Home
 			</button>
-			<button onClick={() => handleClick('completed', showCompleted)} disabled={activeView === 'completed'}>
+
+			<button
+				className="icon-button"
+				onClick={() => handleClick('completed', showCompleted)}
+				disabled={activeView === 'completed'}
+				style={{
+					border: '2px solid #ffffff',
+					borderRadius: '8px',
+					padding: '10px',
+					backgroundColor: 'transparent',
+					transition: 'transform 0.2s ease-in-out',
+				}}
+				onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+				onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+			>
 				<CheckSquareOffset color="#ffffff" size={48} weight="bold" />
-				Completed
 			</button>
-			<button onClick={() => handleClick('deleted', showDeleted)} disabled={activeView === 'deleted'}>
+
+			<button
+				className="icon-button"
+				onClick={() => handleClick('deleted', showDeleted)}
+				disabled={activeView === 'deleted'}
+				style={{
+					border: '2px solid #ffffff',
+					borderRadius: '8px',
+					padding: '10px',
+					backgroundColor: 'transparent',
+					transition: 'transform 0.2s ease-in-out',
+				}}
+				onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+				onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+			>
 				<Trash color="#ffffff" size={48} weight="bold" />
-				Deleted
 			</button>
+
 		</nav>
 	)
 }
