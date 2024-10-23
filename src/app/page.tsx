@@ -366,39 +366,22 @@ export default function Home() {
 		<div className="page" tabIndex={0} autoFocus onKeyDown={handleKey}>
 			<div className="Puzzle-root ">
 				<button
-					className="addTask"
+					className="bottom"
 					onClick={addTask}
 					disabled={currentView !== 'pending'}
-					style={{
-						border: '2px solid #ffffff',
-						borderRadius: '8px',
-						padding: '10px',
-						backgroundColor: 'transparent',
-						transition: 'transform 0.2s ease-in-out'
-					}}
 					onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
 					onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
 				>
-					<Plus color="#ffffff" size={28} weight="bold" />
+					<Plus size={28} weight="bold" />
 				</button>
 				<h1>Task Manager</h1>
 				<button
+					className="bottom"
 					onClick={toggleTheme}
-					style={{
-						border: '2px solid #ffffff',
-						borderRadius: '8px',
-						padding: '10px',
-						backgroundColor: 'transparent',
-						transition: 'transform 0.2s ease-in-out'
-					}}
 					onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
 					onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
 				>
-					{theme === 'light' ? (
-						<Sun color="#ffffff" size={28} weight="bold" />
-					) : (
-						<Moon color="#ffffff" size={28} weight="bold" />
-					)}
+					{theme === 'light' ? <Sun size={28} weight="bold" /> : <Moon size={28} weight="bold" />}
 				</button>
 			</div>
 			<br />
@@ -432,6 +415,7 @@ export default function Home() {
 					))}
 				</div>
 			</div>
+			<br />
 			<br />
 			<BottomNavbar showHome={showHome} showCompleted={showCompleted} showDeleted={showDeleted} />
 		</div>

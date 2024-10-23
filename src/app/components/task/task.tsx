@@ -132,13 +132,19 @@ export default function Task(props: TaskProps) {
 			</div>
 			{isEditing ? (
 				<>
-					<input
-						type="text"
-						value={taskTitle}
-						placeholder="Title Here"
-						onChange={(e) => setTaskTitle(e.target.value)}
-					/>
-					<div>
+					<div className="input-container">
+						<label className="date-editor">Edit the Title:</label>
+						<input
+							type="text"
+							value={taskTitle}
+							placeholder="Title Here"
+							onChange={(e) => setTaskTitle(e.target.value)}
+							className="input-field"
+						/>
+					</div>
+
+					<div className="date-picker-container">
+						<label className="date-editor">Edit the Date:</label>
 						<DatePicker
 							selected={taskCompletionDate}
 							onChange={(date) => setTaskCompletionDate(date!)}
@@ -147,11 +153,17 @@ export default function Task(props: TaskProps) {
 							timeIntervals={5}
 							timeCaption="time"
 							dateFormat="MMMM d, yyyy h:mm:ss aa"
+							className="input-field"
 						/>
 					</div>
-					<div>
-						<label>Priority:</label>
-						<select value={taskPriority} onChange={(e) => setTaskPriority(Number(e.target.value))}>
+
+					<div className="select-container">
+						<label className="date-editor">Edit Priority:</label>
+						<select
+							value={taskPriority}
+							onChange={(e) => setTaskPriority(Number(e.target.value))}
+							className="input-field"
+						>
 							{priority.map((label, index) => (
 								<option key={index} value={index}>
 									{label}
@@ -159,31 +171,56 @@ export default function Task(props: TaskProps) {
 							))}
 						</select>
 					</div>
-					<input
-						type="text"
-						value={taskDescription}
-						placeholder="Write your task details here:"
-						onChange={(e) => setTaskDescription(e.target.value)}
-					/>
-					<button onClick={updateTask}>Save</button>
-					<button onClick={restoreTask}>Cancel</button>
+
+					<div className="input-container">
+						<label className="date-editor">Description:</label>
+						<input
+							type="text"
+							value={taskDescription}
+							placeholder="Write your task details here:"
+							onChange={(e) => setTaskDescription(e.target.value)}
+							className="input-field"
+						/>
+					</div>
+
+					<br />
+					<div className="button-container">
+						<button className="action-button" onClick={updateTask}>
+							Save
+						</button>
+						<button className="action-button" onClick={restoreTask}>
+							Cancel
+						</button>
+					</div>
 				</>
 			) : (
 				<>
 					<div>
-						<p>Due: {format(taskCompletionDate, 'MMMM d, yyyy h:mm:ss aa')}</p>
-						<p>Priority: {priority[taskPriority]}</p>
+						<p>
+							<strong>Due:</strong> {format(taskCompletionDate, 'MMMM d, yyyy h:mm:ss aa')}
+						</p>
+						<p>
+							<strong>Priority:</strong> {priority[taskPriority]}
+						</p>
 					</div>
-					<p>{taskDescription}</p>
+					<p>
+						<strong>{taskDescription}</strong>
+					</p>
 					{props.isDeleted ? (
 						<>
-							<button onClick={props.onDelete}>Delete</button>
-							<button onClick={props.onRestore}>Restore</button>
+							<div className="button-container">
+								<button className="action-button" onClick={props.onDelete}>
+									Delete
+								</button>
+								<button className="action-button" onClick={props.onRestore}>
+									Restore
+								</button>
+							</div>
 						</>
 					) : (
 						<div className="center-button">
 							<button className="edit-button2" onClick={props.onDelete}>
-								<TrashSimple color="#ffffff" size={24} weight="bold" />
+								<TrashSimple size={24} weight="bold" />
 							</button>
 						</div>
 					)}

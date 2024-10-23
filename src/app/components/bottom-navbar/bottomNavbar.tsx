@@ -49,51 +49,30 @@ export default function BottomNavbar({
 				className="icon-button"
 				onClick={() => handleClick('pending', showHome)}
 				disabled={activeView === 'pending'}
-				style={{
-					border: '2px solid #ffffff',
-					borderRadius: '8px',
-					padding: '10px',
-					backgroundColor: 'transparent',
-					transition: 'transform 0.2s ease-in-out'
-				}}
 				onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
 				onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
 			>
-				<ClipboardText color="#ffffff" size={48} weight="bold" />
+				<ClipboardText size={48} weight="bold" />
 			</button>
 
 			<button
 				className="icon-button"
 				onClick={() => handleClick('completed', showCompleted)}
 				disabled={activeView === 'completed'}
-				style={{
-					border: '2px solid #ffffff',
-					borderRadius: '8px',
-					padding: '10px',
-					backgroundColor: 'transparent',
-					transition: 'transform 0.2s ease-in-out'
-				}}
 				onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
 				onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
 			>
-				<CheckSquareOffset color="#ffffff" size={48} weight="bold" />
+				<CheckSquareOffset size={48} weight="bold" />
 			</button>
 
 			<button
 				className="icon-button"
 				onClick={() => handleClick('deleted', showDeleted)}
 				disabled={activeView === 'deleted'}
-				style={{
-					border: '2px solid #ffffff',
-					borderRadius: '8px',
-					padding: '10px',
-					backgroundColor: 'transparent',
-					transition: 'transform 0.2s ease-in-out'
-				}}
 				onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
 				onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
 			>
-				<Trash color="#ffffff" size={48} weight="bold" />
+				<Trash size={48} weight="bold" />
 			</button>
 		</nav>
 	)

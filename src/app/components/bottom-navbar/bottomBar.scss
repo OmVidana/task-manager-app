@@ -9,22 +9,29 @@
 	padding: 10px 20px;
 	background-color: var(--piece-bg-color); // Fondo negro (o el color definido en tu tema)
 	color: var(--piece-color); // Color blanco (o el color definido en tu tema)
-	border-top: 1px solid var(--foreground); // Línea superior para separarlo visualmente
+	border-top: 2px solid var(--foreground); // Línea superior para separarlo visualmente
 	box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); // Sombra para darle un efecto flotante
+	transition:
+		transform 0.2s,
+		border-color 0.2s;
 }
 
 .bottomNavBar button {
 	background-color: transparent;
 	margin-right: 40px;
-	border: none;
+	border: 2px solid var(--foreground); // Borde blanco de 2px
+	border-radius: 5px;
 	cursor: pointer;
 	padding: 8px; // Ajusta el tamaño del botón para que sea consistente
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	transition:
+		transform 0.2s,
+		border-color 0.2s;
 
 	svg {
-		color: var(--piece-color); // Color del icono en la barra de navegación
+		color: var(--foreground); // Color del icono en la barra de navegación
 		width: 1.5em;
 		height: 1.5em;
 	}
