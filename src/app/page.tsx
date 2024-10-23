@@ -214,7 +214,6 @@ export default function Home() {
 					borderRadius: '8px',
 					padding: '10px',
 					backgroundColor: 'transparent',
-					cursor: currentView === 'pending' ? 'pointer' : 'not-allowed',
 					transition: 'transform 0.2s ease-in-out',
 				}} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
 					onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
@@ -226,7 +225,6 @@ export default function Home() {
 					borderRadius: '8px',
 					padding: '10px',
 					backgroundColor: 'transparent',
-					cursor: currentView === 'pending' ? 'pointer' : 'not-allowed',
 					transition: 'transform 0.2s ease-in-out',
 				}} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
 					onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
