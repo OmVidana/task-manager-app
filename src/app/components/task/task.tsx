@@ -139,7 +139,7 @@ export default function Task(props: TaskProps) {
 			{isEditing ? (
 				<>
 					<div className="input-container">
-						<label className="date-editor">Edit the Title:</label>
+						<label className="title-editor">Edit the Title:</label>
 						<input
 							type="text"
 							value={taskTitle}
@@ -151,7 +151,7 @@ export default function Task(props: TaskProps) {
 					</div>
 
 					<div className="date-picker-container">
-						<label className="date-editor">Edit the Date:</label>
+						<label className="title-editor">Edit the Date:</label>
 						<DatePicker
 							selected={taskCompletionDate}
 							onChange={(date) => setTaskCompletionDate(date!)}
@@ -160,12 +160,12 @@ export default function Task(props: TaskProps) {
 							timeIntervals={5}
 							timeCaption="time"
 							dateFormat="MMMM d, yyyy h:mm:ss aa"
-							className="input-field"
+							wrapperClassName="input-field"
 						/>
 					</div>
 
 					<div className="select-container">
-						<label className="date-editor">Edit Priority:</label>
+						<label className="title-editor">Edit Priority:</label>
 						<select
 							value={taskPriority}
 							onChange={(e) => setTaskPriority(Number(e.target.value))}
@@ -181,7 +181,7 @@ export default function Task(props: TaskProps) {
 					</div>
 
 					<div className="input-container">
-						<label className="date-editor">Description:</label>
+						<label className="title-editor">Description:</label>
 						<input
 							type="text"
 							value={taskDescription}
