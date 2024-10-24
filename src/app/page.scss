@@ -8,6 +8,7 @@ body {
 	padding: 0;
 	background-color: var(--piece-bg-color);
 	min-height: 100vh;
+	transition: background-color 0.4s ease;
 }
 
 .page {
@@ -17,14 +18,17 @@ body {
 	height: 100dvh;
 	transition:
 		transform 0.2s,
-		border-color 0.2s;
+		border-color 0.2s,
+		background-color 0.4s ease;
 }
 
 .encabezado {
 	display: flex;
 	transition:
 		transform 0.2s,
-		border-color 0.2s;
+		border-color 0.2s,
+		background-color 0.4s ease,
+		color 0.4s ease;
 	justify-content: space-between;
 	align-items: center;
 	padding: 10px 20px;
@@ -40,13 +44,15 @@ body {
 	margin: 0;
 	transition:
 		transform 0.2s,
-		border-color 0.2s;
+		border-color 0.2s,
+		color 0.4s ease;
 }
 
 .encabezado button {
 	background: none;
 	border: none;
 	cursor: pointer;
+	transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .encabezado button:disabled {
@@ -57,7 +63,8 @@ body {
 	color: var(--foreground);
 	transition:
 		transform 0.2s,
-		border-color 0.2s;
+		border-color 0.2s,
+		background-color 0.4s ease;
 	max-width: 100dvw;
 	margin: 25px auto;
 	margin-top: 5%;
@@ -90,7 +97,8 @@ body {
 	align-items: center;
 	transition:
 		transform 0.2s,
-		border-color 0.2s;
+		border-color 0.2s,
+		background-color 0.4s ease;
 
 	label {
 		font-weight: bold;
@@ -101,6 +109,7 @@ body {
 		border: 1px solid var(--piece-color);
 		border-radius: 4px;
 		background-color: var(--piece-color);
+		transition: background-color 0.4s ease, border-color 0.4s ease;
 	}
 }
 
@@ -111,7 +120,8 @@ body {
 	gap: 15px;
 	transition:
 		transform 0.2s,
-		border-color 0.2s;
+		border-color 0.2s,
+		background-color 0.4s ease;
 	height: 100%;
 	min-height: 0;
 	overflow-y: auto;
@@ -134,6 +144,7 @@ body {
 	&::-webkit-scrollbar-thumb {
 		background-color: #888;
 		border-radius: 10px;
+		transition: background-color 0.4s ease;
 	}
 
 	&::-webkit-scrollbar-thumb:hover {
@@ -151,13 +162,15 @@ body {
 	align-items: center;
 	transition:
 		transform 0.2s,
-		border-color 0.2s;
+		border-color 0.2s,
+		background-color 0.4s ease;
 }
 
 .bottom svg {
 	color: var(--foreground);
 	width: 1.5em;
 	height: 1.5em;
+	transition: color 0.4s ease;
 }
 
 .bottom:hover {

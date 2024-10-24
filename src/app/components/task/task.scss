@@ -1,10 +1,24 @@
+.task-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 30px;
+	width: calc(100% - 100px);
+	box-sizing: border-box;
+	border: 1px solid var(--foreground);
+	border-radius: 10px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background-color: var(--piece-bg-color);
+	margin-left: 50px;
+	margin-right: 50px;
+	transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
 .task {
 	border-bottom: 1px solid var(--foreground);
 	padding-bottom: 10px;
 	margin-bottom: 10px;
-	transition:
-		transform 0.2s,
-		border-color 0.2s;
+	transition: transform 0.2s, border-color 0.4s ease;
 
 	&:last-child {
 		border-bottom: none;
@@ -19,9 +33,7 @@
 }
 
 .edit-button {
-	transition:
-		transform 0.2s,
-		border-color 0.2s;
+	transition: transform 0.2s, border-color 0.4s ease, background-color 0.4s ease, color 0.4s ease;
 	background-color: var(--piece-bg-color);
 	border: 1px solid var(--foreground);
 	border-radius: 5px;
@@ -47,9 +59,7 @@
 }
 
 .custom-checkbox {
-	transition:
-		transform 0.2s,
-		border-color 0.2s;
+	transition: transform 0.2s, border-color 0.4s ease, background-color 0.4s ease;
 	width: 38px;
 	height: 38px;
 	background-color: var(--piece-bg-color);
@@ -96,9 +106,7 @@
 }
 
 .edit-button2 {
-	transition:
-		transform 0.2s,
-		border-color 0.2s;
+	transition: transform 0.2s, border-color 0.4s ease, background-color 0.4s ease, color 0.4s ease;
 	background-color: var(--piece-bg-color);
 	border: 1px solid var(--foreground);
 	border-radius: 5px;
@@ -126,9 +134,7 @@
 }
 
 .action-button {
-	transition:
-		transform 0.2s,
-		border-color 0.2s;
+	transition: transform 0.2s, border-color 0.4s ease, background-color 0.4s ease, color 0.4s ease;
 	color: var(--foreground);
 	background-color: var(--piece-bg-color);
 	border: 1px solid var(--foreground);
@@ -155,20 +161,15 @@
 	}
 }
 
-
 .button-container {
-	transition:
-		transform 0.2s,
-		border-color 0.2s;
+	transition: transform 0.2s, border-color 0.4s ease;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
 .input-field {
-	transition:
-		transform 0.2s,
-		border-color 0.2s;
+	transition: transform 0.2s, border-color 0.4s ease, background-color 0.4s ease;
 	background-color: rgb(158, 154, 154);
 	border: 1px solid var(--foreground);
 	border-radius: 5px;
@@ -210,4 +211,9 @@
 .select-container select,
 .date-picker-container input {
 	width: 100%;
+}
+
+.editor-image {
+	margin-top: 10px;
+	margin-bottom: 15px;
 }

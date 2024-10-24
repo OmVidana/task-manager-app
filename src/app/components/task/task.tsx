@@ -140,6 +140,7 @@ export default function Task(props: TaskProps) {
 							placeholder="Title Here"
 							onChange={(e) => setTaskTitle(e.target.value)}
 							className="input-field"
+							onClick={(e) => e.stopPropagation()}
 						/>
 					</div>
 
@@ -163,6 +164,7 @@ export default function Task(props: TaskProps) {
 							value={taskPriority}
 							onChange={(e) => setTaskPriority(Number(e.target.value))}
 							className="input-field"
+							onClick={(e) => e.stopPropagation()}
 						>
 							{priority.map((label, index) => (
 								<option key={index} value={index}>
@@ -180,6 +182,7 @@ export default function Task(props: TaskProps) {
 							placeholder="Write your task details here:"
 							onChange={(e) => setTaskDescription(e.target.value)}
 							className="input-field"
+							onClick={(e) => e.stopPropagation()}
 						/>
 					</div>
 

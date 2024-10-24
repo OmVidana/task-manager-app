@@ -110,11 +110,11 @@ export default function Home() {
 		const newTask: TaskElement = {
 			id: taskId,
 			title: `Task #${taskId}`,
-			description: 'Escribe una descripción',
+			description: 'Write a Description...',
 			isCompleted: false,
 			isDeleted: false,
 			priority: 0,
-			completionDate: date
+			completionDate: date,
 		}
 		setPendingTasks((prevPendingTasks) => {
 			const updatedPendingTasks = { ...prevPendingTasks, [newTask.id]: newTask }
