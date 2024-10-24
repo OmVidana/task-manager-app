@@ -7,11 +7,12 @@ body {
 	margin: 0;
 	padding: 0;
 	background-color: var(--piece-bg-color);
-	min-height: 100vh;
+	min-height: 100dvh;
 	transition: background-color 0.4s ease;
 }
 
 .page {
+	background-color: var(--background);
 	display: flex;
 	flex-direction: column;
 	width: 100dvw;
@@ -52,7 +53,9 @@ body {
 	background: none;
 	border: none;
 	cursor: pointer;
-	transition: background-color 0.4s ease, color 0.4s ease;
+	transition:
+		background-color 0.4s ease,
+		color 0.4s ease;
 }
 
 .encabezado button:disabled {
@@ -109,7 +112,9 @@ body {
 		border: 1px solid var(--piece-color);
 		border-radius: 4px;
 		background-color: var(--piece-color);
-		transition: background-color 0.4s ease, border-color 0.4s ease;
+		transition:
+			background-color 0.4s ease,
+			border-color 0.4s ease;
 	}
 }
 

@@ -114,7 +114,7 @@ export default function Home() {
 			isCompleted: false,
 			isDeleted: false,
 			priority: 0,
-			completionDate: date,
+			completionDate: date
 		}
 		setPendingTasks((prevPendingTasks) => {
 			const updatedPendingTasks = { ...prevPendingTasks, [newTask.id]: newTask }
@@ -385,7 +385,7 @@ export default function Home() {
 				</button>
 			</div>
 			<br />
-			<div className="task-container" >
+			<div className="task-container">
 				<div className="task-controls">
 					<label>Sort by: </label>
 					<select value={sortMethod} onChange={(e) => setSortMethod(e.target.value as SortMethods)}>

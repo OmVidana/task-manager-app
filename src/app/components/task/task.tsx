@@ -123,11 +123,7 @@ export default function Task(props: TaskProps) {
 		<div className="task selected" tabIndex={props.tabIndex} onClick={handleClick} onKeyDown={handleKey}>
 			<div className="task2">
 				{!isEditing && (
-					<button
-						className="edit-button"
-						onClick={() => setIsEditing(true)}
-						title="Press 'E' to edit"
-					>
+					<button className="edit-button" onClick={() => setIsEditing(true)} title="Press 'E' to edit">
 						<Pencil size={18} weight="bold" />
 					</button>
 				)}
@@ -198,18 +194,10 @@ export default function Task(props: TaskProps) {
 
 					<br />
 					<div className="button-container">
-						<button
-							className="action-button"
-							onClick={updateTask}
-							title="Press 'Enter' to save"
-						>
+						<button className="action-button" onClick={updateTask} title="Press 'Enter' to save">
 							Save
 						</button>
-						<button
-							className="action-button"
-							onClick={restoreTask}
-							title="Press 'Escape' to cancel"
-						>
+						<button className="action-button" onClick={restoreTask} title="Press 'Escape' to cancel">
 							Cancel
 						</button>
 					</div>
@@ -240,11 +228,7 @@ export default function Task(props: TaskProps) {
 						</>
 					) : (
 						<div className="center-button">
-							<button
-								className="edit-button2"
-								onClick={props.onDelete}
-								title="Press 'D' to delete"
-							>
+							<button className="edit-button2" onClick={props.onDelete} title="Press 'D' to delete">
 								<TrashSimple size={24} weight="bold" />
 							</button>
 						</div>
