@@ -161,6 +161,7 @@ export default function Task(props: TaskProps) {
 							timeCaption="time"
 							dateFormat="MMMM d, yyyy h:mm:ss aa"
 							wrapperClassName="input-field"
+							className="date-picker-inside"
 						/>
 					</div>
 
