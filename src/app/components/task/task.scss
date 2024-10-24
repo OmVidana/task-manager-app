@@ -1,19 +1,19 @@
 .task {
-	border-bottom: 1px solid var(--foreground); // Color y grosor de la línea entre tareas
-	padding-bottom: 10px; // Espacio entre la línea y el contenido
-	margin-bottom: 10px; // Espacio entre cada tarea
+	border-bottom: 1px solid var(--foreground);
+	padding-bottom: 10px;
+	margin-bottom: 10px;
 	transition:
 		transform 0.2s,
 		border-color 0.2s;
 
 	&:last-child {
-		border-bottom: none; // Evitar la línea debajo de la última tarea
+		border-bottom: none;
 	}
 }
 
 .task2 {
 	display: flex;
-	align-items: center; // Alinea verticalmente los elementos al centro
+	align-items: center;
 	gap: 10px;
 	justify-content: space-between;
 }
@@ -22,26 +22,26 @@
 	transition:
 		transform 0.2s,
 		border-color 0.2s;
-	background-color: var(--piece-bg-color); // Fondo negro
-	border: 1px solid var(--foreground); // Borde blanco de 2px
-	border-radius: 5px; // Bordes redondeados (opcional)
-	padding: 8px; // Espaciado interno para agrandar el botón
-	cursor: pointer; // Cambia el cursor al pasar sobre el botón
+	background-color: var(--piece-bg-color);
+	border: 1px solid var(--foreground);
+	border-radius: 5px;
+	padding: 8px;
+	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 
 	svg {
-		color: var(--foreground); // Color blanco del ícono
-		width: 1.5em; // Tamaño del ícono responsivo
-		height: 1.5em; // Altura del ícono igual al ancho para mantener proporción
+		color: var(--foreground);
+		width: 1.5em;
+		height: 1.5em;
 	}
 
 	&:hover {
-		background-color: #b1a9a9; // Fondo más claro al pasar el mouse
+		background-color: #b1a9a9;
 
 		svg {
-			color: #3f3f3f; // Cambia el color del ícono al pasar el mouse
+			color: #3f3f3f;
 		}
 	}
 }
@@ -50,41 +50,41 @@
 	transition:
 		transform 0.2s,
 		border-color 0.2s;
-	width: 38px; // Tamaño igual al icono del Pencil
-	height: 38px; // Tamaño igual al icono del Pencil
-	background-color: var(--piece-bg-color); // Mismo fondo que el botón
-	border: 1px solid var(--foreground); // Borde blanco igual al del botón
-	border-radius: 5px; // Bordes redondeados como en el botón
+	width: 38px;
+	height: 38px;
+	background-color: var(--piece-bg-color);
+	border: 1px solid var(--foreground);
+	border-radius: 5px;
 	cursor: pointer;
-	appearance: none; // Ocultar el estilo nativo del checkbox
+	appearance: none;
 
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 
 	&:checked {
-		background-color: var(--foreground); // Fondo blanco cuando está marcado
+		background-color: var(--foreground);
 	}
 
 	&:hover {
-		background-color: #b1a9a9; // Fondo más claro al pasar el mouse
+		background-color: #b1a9a9;
 
 		svg {
-			color: #3f3f3f; // Cambia el color del ícono al pasar el mouse
+			color: #3f3f3f;
 		}
 	}
 
 	&::before {
 		content: '';
 		display: block;
-		width: 10px; // Tamaño del check
+		width: 10px;
 		height: 10px;
-		background-color: var(--foreground); // Color del "check" interno
-		clip-path: polygon(14% 44%, 0% 65%, 50% 100%, 100% 14%, 80% 0%, 43% 62%); // Forma de check
+		background-color: var(--foreground);
+		clip-path: polygon(14% 44%, 0% 65%, 50% 100%, 100% 14%, 80% 0%, 43% 62%);
 	}
 
 	&:checked::before {
-		background-color: var(--piece-bg-color); // Check blanco al marcar
+		background-color: var(--piece-bg-color);
 	}
 }
 
@@ -92,18 +92,18 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 100%; // Asegura que ocupe todo el ancho
+	width: 100%;
 }
 
 .edit-button2 {
 	transition:
 		transform 0.2s,
 		border-color 0.2s;
-	background-color: var(--piece-bg-color); // Fondo negro
-	border: 1px solid var(--foreground); // Borde blanco de 2px
-	border-radius: 5px; // Bordes redondeados (opcional)
-	padding: 8px; // Espaciado interno para agrandar el botón
-	cursor: pointer; // Cambia el cursor al pasar sobre el botón
+	background-color: var(--piece-bg-color);
+	border: 1px solid var(--foreground);
+	border-radius: 5px;
+	padding: 8px;
+	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -111,16 +111,16 @@
 	width: 100%;
 
 	svg {
-		color: var(--foreground); // Color blanco del ícono
-		width: 1.5em; // Tamaño del ícono responsivo
-		height: 1.5em; // Altura del ícono igual al ancho para mantener proporción
+		color: var(--foreground);
+		width: 1.5em;
+		height: 1.5em;
 	}
 
 	&:hover {
-		background-color: #b1a9a9; // Fondo más claro al pasar el mouse
+		background-color: #b1a9a9;
 
 		svg {
-			color: #3f3f3f; // Cambia el color del ícono al pasar el mouse
+			color: #3f3f3f;
 		}
 	}
 }
@@ -130,38 +130,38 @@
 		transform 0.2s,
 		border-color 0.2s;
 	color: var(--foreground);
-	background-color: var(--piece-bg-color); // Fondo negro
-	border: 1px solid var(--foreground); // Borde blanco de 1px
-	border-radius: 5px; // Bordes redondeados
-	padding: 8px; // Espaciado interno
-	width: 100px; // Ancho fijo para que ambos botones tengan el mismo tamaño
-	height: 40px; // Alto fijo para estandarizar los botones
-	cursor: pointer; // Cambia el cursor al pasar sobre el botón
+	background-color: var(--piece-bg-color);
+	border: 1px solid var(--foreground);
+	border-radius: 5px;
+	padding: 8px;
+	width: 100px;
+	height: 40px;
+	cursor: pointer;
 	justify-content: center;
-	margin: 15px; // Espaciado entre los botones
+	margin: 15px;
 
 	svg {
-		color: var(--foreground); // Color blanco del ícono
-		width: 1.5em; // Tamaño del ícono
+		color: var(--foreground);
+		width: 1.5em;
 		height: 1.5em;
 	}
 
 	&:hover {
-		background-color: #b1a9a9; // Fondo más claro al pasar el mouse
+		background-color: #b1a9a9;
 
 		svg {
-			color: #3f3f3f; // Cambia el color del ícono al pasar el mouse
+			color: #3f3f3f;
 		}
 	}
 }
 
-// Estilo para el contenedor de los botones
+
 .button-container {
 	transition:
 		transform 0.2s,
 		border-color 0.2s;
 	display: flex;
-	justify-content: center; // Centrará los botones
+	justify-content: center;
 	align-items: center;
 }
 
@@ -176,15 +176,15 @@
 	margin-bottom: 10px;
 	margin-top: 10px;
 	padding: 8px;
-	width: 100%; // Ocupa el 100% del contenedor
+	width: 100%;
 	height: 40px;
 	box-sizing: border-box;
 	cursor: text;
 
 	&:hover {
-		border-color: var(--piece-bg-color); // Cambia el borde al pasar el cursor (puedes ajustar el color)
-		background-color: rgb(200, 200, 200); // Fondo más claro para indicar interactividad
-		box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); // Sombra para resaltar
+		border-color: var(--piece-bg-color);
+		background-color: rgb(200, 200, 200);
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 	}
 }
 

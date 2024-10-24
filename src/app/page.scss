@@ -1,3 +1,15 @@
+/* Agregamos estos estilos al inicio para el fondo global */
+:root {
+	background-color: var(--background);
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: var(--piece-bg-color);
+	min-height: 100vh;
+}
+
 .page {
 	display: flex;
 	flex-direction: column;
@@ -48,6 +60,8 @@
 		border-color 0.2s;
 	max-width: 100dvw;
 	margin: 25px auto;
+	margin-top: 5%;
+	margin-bottom: 10%;
 	padding: 20px;
 	display: flex;
 	flex-direction: column;

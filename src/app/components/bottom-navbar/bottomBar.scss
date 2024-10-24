@@ -3,14 +3,14 @@
 	bottom: 0;
 	width: 100dvw;
 	display: flex;
-	align-items: center; // Centra los elementos verticalmente
-	justify-content: space-between; // Distribuye los elementos a ambos lados
-	gap: 10px; // Espacio entre los elementos
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
 	padding: 10px 20px;
-	background-color: var(--piece-bg-color); // Fondo negro (o el color definido en tu tema)
-	color: var(--piece-color); // Color blanco (o el color definido en tu tema)
-	border-top: 2px solid var(--foreground); // Línea superior para separarlo visualmente
-	box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); // Sombra para darle un efecto flotante
+	background-color: var(--piece-bg-color);
+	color: var(--piece-color);
+	border-top: 2px solid var(--foreground);
+	box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 	transition:
 		transform 0.2s,
 		border-color 0.2s;
@@ -19,10 +19,10 @@
 .bottomNavBar button {
 	background-color: transparent;
 	margin-right: 40px;
-	border: 2px solid var(--foreground); // Borde blanco de 2px
+	border: 2px solid var(--foreground);
 	border-radius: 5px;
 	cursor: pointer;
-	padding: 8px; // Ajusta el tamaño del botón para que sea consistente
+	padding: 8px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -31,7 +31,7 @@
 		border-color 0.2s;
 
 	svg {
-		color: var(--foreground); // Color del icono en la barra de navegación
+		color: var(--foreground);
 		width: 1.5em;
 		height: 1.5em;
 	}
