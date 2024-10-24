@@ -364,7 +364,7 @@ export default function Home() {
 
 	return (
 		<div className="page" tabIndex={0} autoFocus onKeyDown={handleKey}>
-			<div className="Puzzle-root ">
+			<div className="encabezado">
 				<button
 					className="bottom"
 					onClick={addTask}
@@ -385,7 +385,7 @@ export default function Home() {
 				</button>
 			</div>
 			<br />
-			<div className="task-container">
+			<div className="task-container" >
 				<div className="task-controls">
 					<label>Sort by: </label>
 					<select value={sortMethod} onChange={(e) => setSortMethod(e.target.value as SortMethods)}>
